@@ -1,0 +1,36 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/student/Documents/2048/board.cxx
+board.hxx
+/home/student/Documents/2048/board.hxx
+
+/home/student/Documents/2048/board.hxx
+box.hxx
+/home/student/Documents/2048/box.hxx
+iostream
+-
+curses.h
+-
+vector
+-
+stdlib.h
+-
+boost/lexical_cast.hpp
+-
+
+/home/student/Documents/2048/box.hxx
+stdio.h
+-
+cstdlib
+-
+algorithm
+-
+utility
+-
+
