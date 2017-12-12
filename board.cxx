@@ -1,17 +1,22 @@
 #include "board.hxx"
 
-
+	/** 
+	 * Constructs board object of size size
+	 */
  	Board::Board(size_t size):
 		size_(size)
 	{
 	}
 
+	/** 
+	 * Begins the 2048 Game
+	 */
 	void Board::play(void)
 	{
 		//matrix holding values
 		int ch;
 
-		/* Curses Initialisations */
+		// Curses Initialisations //
 		initscr();
 		raw();
 		keypad(stdscr, TRUE);
@@ -71,11 +76,17 @@
 
 	}
 
+	/** 
+	 * Returns the board size
+	 */
 	size_t Board::size()
 	{
 		return size_;
 	}
 
+	/** 
+	 * Prints the game board
+	 */
 	void Board::print(void)
 	{
 		char x;
@@ -134,6 +145,11 @@
 		addstr("\n");
 	}
 
+	/** 
+	 * Determines which spaces on the board are not currently occupied
+	 *
+	 *  @return the array of unoccupied spaces
+	 */
 	std::vector<size_t> Board::open_spaces(void)
 	{
 		std::vector<size_t> temp;
@@ -151,6 +167,10 @@
 		return temp;
 	}
 
+	/** 
+	 * Creates a new box on the board with either 2 or 4 as its value in a 
+	 * random open space on the board
+	 */
 	void Board::generate(void)
 	{
 		//number of seconds since January 1, 1970
@@ -168,6 +188,10 @@
 		}
 	}
 
+	/** 
+	 * Pushes boxes up, then retallies the score and generates a new piece in an
+	 * available space
+	 */
 	void Board::move_up(void)
 	{
 		push_up();
@@ -175,7 +199,8 @@
 		{
 			for (size_t j = 0; j < size_-1; ++j)
 			{
-				if (board_[i][j].value() == board_[i][j+1].value() && board_[i][j].value() != 0)
+				if (board_[i][j].value() == board_[i][j+1].value() 
+					&& board_[i][j].value() != 0)
 				{
 					score_ += board_[i][j].merge();
 					board_[i][j+1] = Box(0);
@@ -186,6 +211,11 @@
 			}
 		}
 	}
+
+	/** 
+	 * Pushes boxes down, then retallies the score and generates a new piece in an
+	 * available space
+	 */
 	void Board::move_down(void)
 	{
 		push_down();
@@ -193,7 +223,8 @@
 		{
 			for (size_t j = size_ - 1; j > 0; --j)
 			{
-				if (board_[i][j].value() == board_[i][j-1].value() && board_[i][j].value() != 0)
+				if (board_[i][j].value() == board_[i][j-1].value() 
+					&& board_[i][j].value() != 0)
 				{
 					score_ += board_[i][j].merge();
 					board_[i][j-1] = Box(0);
@@ -204,6 +235,11 @@
 			}
 		}
 	}
+
+	/** 
+	 * Pushes boxes left, then retallies the score and generates a new piece in an
+	 * available space
+	 */
 	void Board::move_left(void)
 	{
 		push_left();
@@ -211,7 +247,8 @@
 		{
 			for (size_t j = 0; j < size_; ++j)
 			{
-				if (board_[i][j].value() == board_[i+1][j].value() && board_[i][j].value() != 0)
+				if (board_[i][j].value() == board_[i+1][j].value() 
+					&& board_[i][j].value() != 0)
 				{
 					score_ += board_[i][j].merge();
 					board_[i+1][j] = Box(0);
@@ -222,6 +259,11 @@
 			}
 		}
 	}
+
+	/** 
+	 * Pushes boxes right, then retallies the score and generates a new piece in an
+	 * available space
+	 */
 	void Board::move_right(void)
 	{
 		push_right();
@@ -229,7 +271,8 @@
 		{
 			for (size_t j = 0; j < size_; ++j)
 			{
-				if (board_[i][j].value() == board_[i-1][j].value() && board_[i][j].value() != 0)
+				if (board_[i][j].value() == board_[i-1][j].value() 
+					&& board_[i][j].value() != 0)
 				{
 					score_ += board_[i][j].merge();
 					board_[i-1][j] = Box(0);
@@ -241,6 +284,10 @@
 		}
 	}
 
+	/** 
+	 * Moves all possible pieces as far up as they can slide, combining like
+	 * pairs of boxes
+	 */
 	void Board::push_up(void)
 	{
 		for(size_t i = 0; i < size_; ++i)
@@ -256,6 +303,11 @@
 			}
 		}
 	}
+
+	/** 
+	 * Moves all possible pieces as far down as they can slide, combining like
+	 * pairs of boxes
+	 */
 	void Board::push_down(void)
 	{
 		for(size_t i = 0; i < size_; ++i)
@@ -271,6 +323,11 @@
 			}
 		}		
 	}
+
+	/** 
+	 * Moves all possible pieces as far left as they can slide, combining like
+	 * pairs of boxes
+	 */
 	void Board::push_left(void)
 	{
 		for (size_t i = size_ - 1; i > 0; --i)
@@ -286,6 +343,11 @@
 			}
 		}
 	}
+
+	/** 
+	 * Moves all possible pieces as far right as they can slide, combining like
+	 * pairs of boxes
+	 */
 	void Board::push_right(void)
 	{
 		for (size_t i = 0; i < size_-1; ++i)
@@ -302,6 +364,11 @@
 		}
 	}
 
+	/** 
+	 * Determines if there are still available moves on the board
+	 *
+	 * @return  true if there are possible moves still on the board
+	 */
 	bool Board::available_moves(void)
 	{
 		if (open_spaces().size() <= 0)
@@ -320,6 +387,9 @@
 		return true;
 	}
 
+	/** 
+	 * Ends the 2048 game and requests a restart or termination on user input
+	 */
 	bool Board::endGame(void)
 	{
 		sleep(2);
@@ -338,6 +408,10 @@
 		}
 	}
 	
+	/** 
+	 * Restarts the game board, clearing boxes, resetting score, and placing two
+	 * new voxes on the board
+	 */
 	void Board::restart(void)
 	{
 		for (size_t i = 0; i < size_; ++i)
